@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomLayout">
+	    <attr name="android:layout_gravity" />
+	    <attr name="layout_position">
+	        <enum name="inputbox" value="0" />
+	        <enum name="detailsbox" value="1" />
+	        <enum name="actionbox" value="2" />
+	    </attr>
+	</declare-styleable>
+	
+    <declare-styleable name="CustomInput">
+	    <attr name="android:layout_gravity" />
+	    <attr name="layout_key">
+	        <enum name="num1" value="0" />
+	        <enum name="num2" value="1" />
+	        <enum name="num3" value="2" />
+	        <enum name="num4" value="3" />
+	        <enum name="num5" value="4" />
+	        <enum name="num6" value="5" />
+	        <enum name="num7" value="6" />
+	        <enum name="num8" value="7" />
+	        <enum name="num9" value="8" />
+	        <enum name="num0" value="9" />
+	        <enum name="clear" value="10" />
+	        <enum name="enter" value="11" />
+	    </attr>
+	</declare-styleable>
+</resources>
