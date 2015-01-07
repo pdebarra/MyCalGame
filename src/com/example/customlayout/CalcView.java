@@ -50,12 +50,11 @@ public class CalcView extends BaseGameView{
 		gestureListener = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				return gestureDetector.onTouchEvent(event);
 			}
 		};
-		
 		setOnTouchListener(gestureListener);
+		
 	}
 
 	public void updateFigures(String numA, Boolean UnumA, 
@@ -89,7 +88,7 @@ public class CalcView extends BaseGameView{
 		
 		if(mainActivity.gameManager.getGameState() == GameManager.STATE_0_READY){
 			// Press to Start
-			message = "Press to Start";
+			message = "Start";
 			textPaint.getTextBounds(message, 0, message.length(), txtBoundsRect);
 			posXtxt = (canvasWidth * 10) / 20 - txtBoundsRect.width() / 2;
 			posYtxt = (canvasHeight * 12) / 20 + txtBoundsRect.height() / 2;
@@ -117,6 +116,12 @@ public class CalcView extends BaseGameView{
 			posXtxt = (canvasWidth * 10) / 20 - txtBoundsRect.width() / 2;
 			posYtxt = (canvasHeight * 12) / 20 + txtBoundsRect.height() / 2;
 			canvas.drawText(interimtxt, posXtxt, posYtxt, textPaint);
+			// write message to give option of skipping interim step
+			message = "move";
+			textPaint.getTextBounds(message, 0, message.length(), txtBoundsRect);
+			posXtxt = (canvasWidth * 10) / 20 - txtBoundsRect.width() / 2;
+			posYtxt = (canvasHeight * 17) / 20 + txtBoundsRect.height() / 2;
+			canvas.drawText(message, posXtxt, posYtxt, textPaint);
 		} else if(mainActivity.gameManager.getGameState() == GameManager.STATE_2_INPUT_B){
 			// Write NumA
 			textPaint.getTextBounds(numAtxt, 0, numAtxt.length(), txtBoundsRect);
@@ -207,6 +212,12 @@ public class CalcView extends BaseGameView{
 				Log.d(TAG, "onLongPress: church");
 				if(mainActivity.gameManager.getGameState() == GameManager.STATE_0_READY || mainActivity.gameManager.getGameState() == GameManager.STATE_3_RESULT){
 					boolean temp = mainActivity.gameManager.receiveUpdate("");
+				}
+			} else if(8.0f / 24.0f <= xNorm && xNorm <= 16.0f / 24.0f && 15.0f / 20.0f <= yNorm && yNorm <= 19.0f / 20.0f){
+				Log.d(TAG, "onLongPress: church");
+				if(mainActivity.gameManager.getGameState() == GameManager.STATE_1_INPUT_A || mainActivity.gameManager.getGameState() == GameManager.STATE_3_RESULT){
+					interimtxt = "skip";
+					boolean temp = mainActivity.gameManager.receiveUpdate("skip");
 				}
 			}
 			return true;

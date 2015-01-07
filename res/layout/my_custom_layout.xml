@@ -170,13 +170,16 @@
 
     <!-- stack second view to left.  -->
 
-    <com.example.customlayout.GameView
+    <!--<com.example.customlayout.PuzzleView
+		android:id="@+id/PV_puzleview" -->
+	<com.example.customlayout.PopView
+	    android:id="@+id/PV_pop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_position="detailsbox"
  />
    <com.example.customlayout.CalcView
-        android:id="@+id/CV_calcView"
+        android:id="@+id/CV_calcView" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_position="actionbox"

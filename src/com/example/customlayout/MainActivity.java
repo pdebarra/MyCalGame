@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
 	public InputAns inputAns;
 	public GameManager gameManager;
 	public CalcView calcView;
+	public PopView popView;
 	
 	
     @Override
@@ -33,6 +34,8 @@ public class MainActivity extends Activity {
 		gameManager = new GameManager();
 		calcView = (CalcView) findViewById(R.id.CV_calcView);
 		
+		popView = (PopView) findViewById(R.id.PV_pop);
+		
     }
 
 
@@ -43,6 +46,26 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "onCreateOptionsMenu");
         return true;
     }
+
+	@Override
+	protected void onResume()
+	{
+		// TODO: Implement this method
+		super.onResume();
+		//popView.resume();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		// TODO: Implement this method
+		super.onPause();
+		//popView.pause();
+	}
+	
+	
+	
+	
     
     public void keypadEntry(View v){
 		Log.d(TAG, "keyPadEntry");
@@ -192,7 +215,9 @@ public class MainActivity extends Activity {
     		} else if(currentState == STATE_1_INPUT_A){
     			if(input.equals(Interim)){
     				currentState = STATE_2_INPUT_B; 
-    			} else {
+    			} else if(input.equals("skip")){
+					currentState = STATE_2_INPUT_B; 
+				} else {
     				success = false;
     			}
     		} else if(currentState == STATE_2_INPUT_B){
