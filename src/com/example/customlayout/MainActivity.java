@@ -227,6 +227,7 @@ public class MainActivity extends Activity {
     				success = false;
     			}
     		} else if(currentState == STATE_3_RESULT){
+    			popView.addOneBullet();
     			currentState = STATE_0_READY;  
 				success = false;
     		} else {

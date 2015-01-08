@@ -17,6 +17,9 @@ import java.util.Random;
 
 public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Callback
 {
+
+	private static String TAG = "PopView";
+	
 	Context context;
 	
 	
@@ -43,7 +46,7 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 	PuzzleGrid puzzleGrid;
 	Input input;
 	
-	private Boolean readyToFire;
+	volatile private Boolean readyToFire;
 	
 	public PopView(Context context, AttributeSet attrs){
 		super(context, attrs);
@@ -106,6 +109,7 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 			TouchEvent event = touchEvents.get(i);
 			if(event.type == TouchEvent.TOUCH_UP){
 				//Toast.makeText(context, "Popview Touched", Toast.LENGTH_SHORT).show();
+				Log.d(TAG, "Handling View Touched Event");
 				puzzleGrid.handleInput(event.x, event.y);
 			}
 		}
@@ -138,7 +142,6 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		// TODO Auto-generated method stub
 		// start the thread here so that we don't busy-wait in run()
 		// waiting for the surface to be created
 		resume();
@@ -161,6 +164,10 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 		}
 	}
 	
+	public void addOneBullet(){
+		puzzleGrid.addOneBullet();
+	}
+	
 	private class PuzzleGrid {
 		int gridDimension;
 		int gridOffset;
@@ -176,6 +183,8 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 		volatile int fallingSquareInterval;
 		Long lastTime, thisTime;
 		Random random;
+		volatile private int bulletCount;
+		volatile private boolean isWider;
 		
 		
 		public PuzzleGrid(int gridDimension, int gridOffset, int viewWidth, int viewHeight){
@@ -194,11 +203,17 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 			
 			lastTime = thisTime = System.currentTimeMillis();
 			
+			resetGame();
 			resetRefs(viewWidth, viewHeight);
 		}
 		
 		public void resetRefs(int viewWidth, int viewHeight){
 			synchronized(this){
+				if(viewWidth > viewHeight){
+					isWider = true;
+				} else{
+					isWider = false;
+				}
 				squareSize = (Math.min(viewWidth, viewHeight) - 2 * paddingSize) / gridDimension;
 				top = paddingWidth + (screenheight - 2 * paddingWidth - squareSize*gridDimension) / 2;
 				bottom = top + squareSize*gridDimension;
@@ -207,6 +222,12 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 				clearGrid();
 				initiateFallingSquare();
 			}
+		}
+		
+		public void resetGame(){
+			bulletCount = 3;
+			clearGrid();
+			initiateFallingSquare();	
 		}
 		
 		private void clearGrid(){
@@ -248,6 +269,7 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 					}
 				}
 				drawFallingSquare(canvas);
+				drawBullets(canvas);
 			}
 		}
 		
@@ -279,6 +301,9 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 				} 
 				i++;
 			}
+			if(isGameOver()){
+				resetGame();
+			}
 		}
 		
 		private void drawSquare(Canvas canvas, int row, int col){
@@ -289,13 +314,46 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 		}
 		
 		private void drawFallingSquare(Canvas canvas){
-			int x = left + (gridOffset + fallingSquareCol) * squareSize + squarePadding;
-			int y = bottom - fallingSquareDist;
-			int size = squareSize - 2 * squarePadding;
-			canvas.drawRect(x, y, x + size, y + size, pt_Line);
+			synchronized(this){
+				int x = left + (gridOffset + fallingSquareCol) * squareSize + squarePadding;
+				int y = bottom - fallingSquareDist;
+				int size = squareSize - 2 * squarePadding;
+				canvas.drawRect(x, y, x + size, y + size, pt_Line);
+			}
+		}
+		
+		private void drawBullets(Canvas canvas){
+			if(isWider){
+				for(int i = 0; i <  bulletCount; i++){
+					canvas.drawRect(0 + squarePadding, (gridDimension - i) * squareSize - squarePadding, 
+									left + squareSize - squarePadding, (gridDimension - 1 - i) * squareSize + squarePadding,
+									pt_Line);	
+				}
+			} else {
+				
+			}
+		}
+		
+		private boolean touchedFallingSquare(int xTouch, int yTouch){
+			synchronized(this){
+				int x = left + (gridOffset + fallingSquareCol) * squareSize + squarePadding;
+				int y = bottom - fallingSquareDist;
+				int size = squareSize - 2 * squarePadding;
+			
+				if(		   xTouch > x 
+						&& xTouch < x + size
+						&& yTouch > y 
+						&& yTouch < y + size ){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
 		}
 		
 		public void handleInput(int x, int y){
+			/*
 			int row = findRow(y);
 			int col = findCol(x);
 			
@@ -303,6 +361,12 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 				if(Math.min(row, col) >= 0){
 					isPressed[row][col] = true; 
 				}
+			}
+			*/
+			
+			if(touchedFallingSquare(x, y) && bulletCount > 0){
+				bulletCount = Math.max(bulletCount - 1, 0);
+				initiateFallingSquare();
 			}
 		}
 		
@@ -320,6 +384,23 @@ public class PopView extends SurfaceView implements Runnable, SurfaceHolder.Call
 			} else {
 				return (x - (left + gridOffset*squareSize)) / squareSize;
 			}					
+		}
+		
+		public void setBulletCount(int num){
+			bulletCount = num;
+		}
+		
+		public void addOneBullet(){
+			bulletCount = Math.min(bulletCount + 1, gridDimension);
+		}
+		
+		private boolean isGameOver(){
+			for(int i = 0; i < gridDimension - 2 * gridOffset; i++){
+				if(!isPressed[0][i]) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }
