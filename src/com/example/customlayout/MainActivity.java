@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -16,8 +17,8 @@ public class MainActivity extends Activity {
 	private static String TAG = "MainActivity";
 	public InputAns inputAns;
 	public GameManager gameManager;
-	public CalcView calcView;
-	public PopView popView;
+	public Calc2View calcView;
+	public PuzzleView puzzleView;
 	
 	
     @Override
@@ -28,14 +29,14 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.my_custom_layout);
-		Log.d(TAG, "Exited OnCreate");
 		
 		inputAns = new InputAns();
 		gameManager = new GameManager();
-		calcView = (CalcView) findViewById(R.id.CV_calcView);
+		calcView = (Calc2View) findViewById(R.id.CV_calcView);
 		
-		popView = (PopView) findViewById(R.id.PV_pop);
-		
+		puzzleView = (PuzzleView) findViewById(R.id.PV_pop);
+
+		Log.d(TAG, "Exited OnCreate");
     }
 
 
@@ -52,6 +53,9 @@ public class MainActivity extends Activity {
 	{
 		// TODO: Implement this method
 		super.onResume();
+		Log.d(TAG, "Entered onResume");
+		puzzleView.setRunning(true);
+		calcView.setRunning(true);
 		//popView.resume();
 	}
 
@@ -61,13 +65,57 @@ public class MainActivity extends Activity {
 		// TODO: Implement this method
 		super.onPause();
 		//popView.pause();
+		Log.d(TAG, "Entered onPause");
+		Log.d("PopView", "Entered onPause");
+		puzzleView.setRunning(false);
+		calcView.setRunning(false);
 	}
 	
 	
-	
-	
-    
-    public void keypadEntry(View v){
+
+    @Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		Log.d(TAG, "Entered onStart");
+	}
+
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		Log.d(TAG, "Entered onRestart");
+	}
+
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.d(TAG, "Entered onStop");
+		
+
+	}
+
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.d(TAG, "Entered onDestroy");
+	}
+
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "Entered onConfigurationChanged");
+		
+	}
+
+
+	public void keypadEntry(View v){
 		Log.d(TAG, "keyPadEntry");
 		
     	switch(v.getId()){
@@ -227,7 +275,7 @@ public class MainActivity extends Activity {
     				success = false;
     			}
     		} else if(currentState == STATE_3_RESULT){
-    			popView.addOneBullet();
+    			puzzleView.addOneBullet();
     			currentState = STATE_0_READY;  
 				success = false;
     		} else {

@@ -172,18 +172,27 @@
 
     <!--<com.example.customlayout.PuzzleView
 		android:id="@+id/PV_puzleview" -->
-	<com.example.customlayout.PopView
+	<com.example.customlayout.PuzzleView
 	    android:id="@+id/PV_pop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_position="detailsbox"
  />
-   <com.example.customlayout.CalcView
+   <com.example.customlayout.Calc2View
         android:id="@+id/CV_calcView" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_position="actionbox"
  />
+	<!--
+ 
+   <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_position="actionbox"
+ />
+ -->
+ 
     <!-- also put a view on the right.
 
     <TextView

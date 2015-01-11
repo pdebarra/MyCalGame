@@ -60,12 +60,18 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 		// it might touch the Surface after we return and explode
 		Log.d(TAG, "SurfaceDestroyed: start");
 		boolean retry = true;
+		Log.d(TAG, "destroy: 1");
 		gvGameThread.gtSetRunning(false);
+		Log.d(TAG, "destroy: 2");
 		while (retry) {
+			Log.d(TAG, "destroy: 3");
 			try {
 				gvGameThread.join();
+				Log.d(TAG, "destroy: 4");
 				retry = false;
+				Log.d(TAG, "destroy: 5");
 			} catch (InterruptedException e) {
+				Log.d(TAG, "destroy: catch");
 			}
 		}
 		Log.d(TAG, "SurfaceDestroyed: end");
@@ -74,8 +80,8 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 	@Override
 	public void onWindowFocusChanged(boolean hasWindowFocus) {
 		Log.d(TAG, "onWindowFocusChanged: start");
-		if (!hasWindowFocus) gvGameThread.pause();
-		else gvGameThread.unpause();
+		if (!hasWindowFocus) gvGameThread.gtSetRunning(false);
+		else gvGameThread.gtSetRunning(true);
 		Log.d(TAG, "onWindowFocusChanged: end");
 	}
 
@@ -87,6 +93,13 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 	}
 	public void bespokeDraw(Canvas canvas, int canvasWidth, int canvasHeight) {
 		// TODO Auto-generated method stub
+	}
+	
+	
+	public void setRunning(Boolean b) {
+		Log.d(TAG, "setRunning: start: " + b);
+		gvGameThread.gtSetRunning(b);
+		Log.d(TAG, "setRunning: end");
 	}
 	
 
@@ -166,6 +179,7 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 						e.printStackTrace();
 					}
 				}
+			Log.d(TAG, "run: gameLoop");
 			} // End of game loop
 
 			Log.d(TAG, "run: end");
@@ -188,9 +202,9 @@ public class BaseGameView extends SurfaceView implements SurfaceHolder.Callback 
 		}
 
 		public void gtSetRunning(Boolean b) {
-			Log.d(TAG, "setRunning: start");
+			Log.d(TAG, "gtSetRunning: start: " + b);
 			gtRun = b;
-			Log.d(TAG, "setRunning: end");
+			Log.d(TAG, "gtSetRunning: end");
 		}
 
 		public void pause() {
