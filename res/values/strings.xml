@@ -4,5 +4,40 @@
     <string name="app_name">CustomLayout</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="splash_text">Multi Game!</string>
+    
+    <string name="menu_heading">Main Menu</string>
+    <string name="menu_item_play">Play Game</string>
+    <string name="menu_item_scores">View Scores</string>
+    <string name="menu_item_settings">Settings</string>
+    <string name="menu_item_help">Help!</string>
+    
+    <string name="settings_heading">Settings</string>
+    <string name="pref_name">Name:</string>
+    <string name="pref_email">E-mail:</string>
+    <string name="pref_dob">Date of Birth:</string>
+    <string name="pref_pword">Password:</string>
+    <string name="pref_maxlevel">Max Level:</string>
+    <string name="settings_button_pword">Set Password:</string>
+    <string name="settings_button_dob">Set Date of Birth:</string>
+    <string name="default_text">Default:</string>
+    
+    <string name="teach_text_a">Let\'s learn the basics for multiplying large numbers *** *** PRESS NEXT</string>
+    <string name="teach_text_b">These tricks may at first seem strange and unnatural, but give them a chance *** *** PRESS NEXT</string>
+    <string name="teach_text_c">Once practiced, they become second nature. Leave it to this app to make the practice FUN! *** *** PRESS NEXT</string>
+    <string name="teach_text_d">First we practice with numbers close to 10, so call this section the BASE 10 tutorial *** *** PRESS NEXT</string>
+    <string name="teach_text_e_1">Take the example:</string>
+    <string name="teach_text_e_2">*** *** Let\'s do this in two steps *** *** PRESS NEXT</string>
+    <string name="teach_text_f_1">Step 1: Subtract 10 from one number:</string>
+    <string name="teach_text_f_2">*** *** add the result to the other number:</string>
+    <string name="teach_text_f_3">*** *** and multiply by 10:</string>
+    <string name="teach_text_f_4">*** *** PRESS NEXT</string>
+    <string name="teach_text_g">Enter above answer and press store to confirm this is correct *** *** PRESS NEXT</string>
+    <string name="teach_text_h_1">Step 2: Subtract 10 from both numbers:</string>
+    <string name="teach_text_h_2">*** *** multiply the two results together:</string>
+    <string name="teach_text_h_3">*** *** and add to stored value: *** *** PRESS NEXT</string>
+    <string name="teach_text_i">Enter above answer and press Enter to button to confirm: *** *** PRESS NEXT</string>
+
+    <string name="learn_text_1">default text for now *** *** PRESS NEXT</string>
 
 </resources>

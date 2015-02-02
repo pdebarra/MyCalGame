@@ -2,7 +2,9 @@ package com.example.customlayout;
 import android.view.View;
 import android.content.Context;
 import java.util.List;
-import com.example.customlayout.Input;
+
+import com.example.generic.Input;
+import com.example.generic.MultiTouchHandler;
 
 public class AndroidInput implements Input {
 	MultiTouchHandler touchHandler;
